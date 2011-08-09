@@ -120,7 +120,9 @@
 	$.fn.tagsInput = function(options) { 
     var settings = jQuery.extend({
       interactive:true,
-      defaultText: false,
+      defaultText: 'add a tag',
+      emptyPlaceholder: 'add tags, separated by commas',
+      useEmptyPlaceholder: false,
       minChars:0,
       width:'300px',
       height:'100px',
@@ -146,7 +148,21 @@
 				input_wrapper: '#'+id+'_addTag',
 				fake_input: '#'+id+'_tag'
 			},settings);
-	
+      
+      var defaultText, emptyPlaceholder;
+      if(settings.useEmptyPlaceholder){
+        if($(this).attr('placeholder')) emptyPlaceholder = $(this).attr('placeholder');
+        else emptyPlaceholder = settings.emptyPlaceholder;
+        if($(this).data('default')) defaultText = $(this).data('default');
+        else defaultText = settings.defaultText;
+      }else if($(this).attr('placeholder')){
+        defaultText = $(this).attr('placeholder');
+      }
+      else{
+        if($(this).data('default')) defaultText = $(this).data('default');
+        else defaultText = settings.defaultText;
+      }
+
 	
 			delimiter[id] = data.delimiter;
 			
@@ -157,13 +173,14 @@
 				tags_callbacks[id]['onChange'] = settings.onChange;
 			}
 	
-			var markup = '<div id="'+id+'_tagsinput" class="tagsinput"><div id="'+id+'_addTag">';
+			var markup = '<div id="'+id+'_tagsinput" class="tagsinput">';
+
+      if(settings.interactive && settings.useEmptyPlaceholder){
+        markup = markup + '<div id="'+id+'_empty" class="tagEmptyPlaceholder">' + emptyPlaceholder + '</div>';
+      }
+			markup = markup + '<div id="'+id+'_addTag">';
 			
 			if (settings.interactive) {
-        var placeholder = $(this).attr('placeholder');
-        var defaultText;
-        placeholder = (placeholder ? placeholder : 'add a tag');
-        defaultText = (settings.defaultText ? settings.defaultText : placeholder);
 				markup = markup + '<input id="'+id+'_tag" value="" data-default="'+defaultText+'" />';
 			}
 			
@@ -176,13 +193,17 @@
 	
 			if ($(data.real_input).val()!='') { 
 				$.fn.tagsInput.importTags($(data.real_input),$(data.real_input).val());
+        $(data.holder).find('.tagEmptyPlaceholder').hide();
 			}		
 			if (settings.interactive) { 
 				$(data.fake_input).val($(data.fake_input).attr('data-default'));
+				if($(data.real_input).val()=='' && settings.useEmptyPlaceholder) $(data.fake_input).val('');
+        
 				$(data.fake_input).css('color',settings.placeholderColor);		
 		
 				$(data.holder).bind('click',data,function(event) {
 					$(event.data.fake_input).focus();
+          $(event.data.holder).find('.tagEmptyPlaceholder').hide();
 				});
 			
 				$(data.fake_input).bind('focus',data,function(event) {
@@ -190,6 +211,7 @@
 						$(event.data.fake_input).val('');
 					}
 					$(event.data.fake_input).css('color','#000000');		
+          $(event.data.holder).find('.tagEmptyPlaceholder').hide();
 				});
 						
 				if (settings.autocomplete_url != undefined) {
@@ -225,6 +247,13 @@
 									$(event.data.real_input).addTag($(event.data.fake_input).val(),{focus:true,unique:(settings.unique)});
 							} else {
 								$(event.data.fake_input).val($(event.data.fake_input).attr('data-default'));
+                if($(event.data.real_input).val() != ''){
+                  $(data.holder).find('.tagEmptyPlaceholder').hide();
+                }
+                else{
+                  $(event.data.holder).find('.tagEmptyPlaceholder').show();
+                  if(settings.useEmptyPlaceholder) $(event.data.fake_input).val('');
+                }
 								$(event.data.fake_input).css('color',settings.placeholderColor);
 							}
 							return false;
