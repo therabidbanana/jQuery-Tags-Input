@@ -42,6 +42,7 @@
 				//autocomplete_url:'test/fake_plaintext_endpoint.html' //jquery.autocomplete (not jquery ui)
 				autocomplete_url:'test/fake_json_endpoint.html' // jquery ui autocomplete requires a json endpoint
 			});
+      $('#tags_4').tagsInput();
 			
 // Uncomment this line to see the callback functions in action
 //			$('input.tags').tagsInput({onAddTag:onAddTag,onRemoveTag:onRemoveTag});		
@@ -67,6 +68,8 @@
 			<label>Autocomplete:</label>
 			<input id='tags_3' type='text' class='tags'>
 			
+			<label>HTML5 placeholder attribute</label>
+			<input id='tags_4' type='text' class='tags' placeholder="Placeholder is awesome">
 		</form>
 	</section>
 

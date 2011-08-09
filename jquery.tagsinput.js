@@ -120,7 +120,7 @@
 	$.fn.tagsInput = function(options) { 
     var settings = jQuery.extend({
       interactive:true,
-      defaultText:'add a tag',
+      defaultText: false,
       minChars:0,
       width:'300px',
       height:'100px',
@@ -160,7 +160,11 @@
 			var markup = '<div id="'+id+'_tagsinput" class="tagsinput"><div id="'+id+'_addTag">';
 			
 			if (settings.interactive) {
-				markup = markup + '<input id="'+id+'_tag" value="" data-default="'+settings.defaultText+'" />';
+        var placeholder = $(this).attr('placeholder');
+        var defaultText;
+        placeholder = (placeholder ? placeholder : 'add a tag');
+        defaultText = (settings.defaultText ? settings.defaultText : placeholder);
+				markup = markup + '<input id="'+id+'_tag" value="" data-default="'+defaultText+'" />';
 			}
 			
 			markup = markup + '</div><div class="tags_clear"></div></div>';
