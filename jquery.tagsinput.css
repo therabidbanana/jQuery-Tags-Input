@@ -5,3 +5,10 @@ div.tagsinput input { width:80px; margin:0px; font-family: helvetica; font-size:
 div.tagsinput div { display:block; float: left; } 
 div.tagsinput div.tagEmptyPlaceholder { color: #666; font-family: helvetica; font-size:13px; } 
 .tags_clear { clear: both; width: 100%; height: 0px; }
+
+
+/*Testing*/
+#tags_6_tagsinput{
+  width: 600px;
+  height; 80px;
+  }
