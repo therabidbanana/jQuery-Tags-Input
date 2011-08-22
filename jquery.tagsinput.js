@@ -172,8 +172,8 @@
       emptyPlaceholder: 'add tags, separated by commas',
       useEmptyPlaceholder: false,
       minChars:0,
-      width:'300px',
-      height:'100px',
+      width:false,
+      height:false,
       autocomplete: {selectFirst: false },
       'hide':true,
       'delimiter':',',
@@ -239,8 +239,8 @@
 			
 			$(markup).insertAfter(this);
 
-			$(data.holder).css('width',settings.width);
-			$(data.holder).css('height',settings.height);
+			if(settings.width) $(data.holder).css('width',settings.width);
+			if(settings.height) $(data.holder).css('height',settings.height);
 	
 			if ($(data.real_input).val()!='') { 
 				$.fn.tagsInput.importTags($(data.real_input),$(data.real_input).val());
@@ -317,11 +317,7 @@
 					    event.preventDefault();
 						if( (event.data.minChars <= $(event.data.fake_input).val().length) && (!event.data.maxChars || (event.data.maxChars >= $(event.data.fake_input).val().length)) )
 							$(event.data.real_input).addTag($(event.data.fake_input).val(),{focus:true,unique:(settings.unique)});
-<<<<<<< HEAD
-					    
-=======
 						  $(event.data.fake_input).resetAutosize(settings);
->>>>>>> autogrow-input
 						return false;
 					} else if (event.data.autosize) {
             $(event.data.fake_input).doAutosize(settings);
